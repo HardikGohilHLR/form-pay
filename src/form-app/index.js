@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import Login from './login'; 
-const SignUp = lazy(() =>  import('./signup')); 
+const SignUp = lazy(() => import('./signup')); 
 
 const Index = () => {
     return (

@@ -4,9 +4,9 @@ import FormPayApp from './form-app';
 
 const App = () => {
 	return (
-		<>
+		<React.Fragment>
 			<FormPayApp />
-		</>
+		</React.Fragment>
 	)
 }
 
