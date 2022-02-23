@@ -3,6 +3,7 @@
 */
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // Components
 import FInput from '../../components/input/FInput';
@@ -38,25 +39,22 @@ const Login = () => {
                         <div className="rounded bg-white max-w-md rounded overflow-hidden p-5">
 
                             <form className="space-y-4">
-                                
-                                <div className="rounded-md shadow-sm -space-y-px">
-                                    <div className="grid gap-6">
-                                        <div className="col-span-12">
-                                            <FInput label="Username" required isError={true}> 
-                                                <input type="text" name="username" value={fieldValues?.username} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                                            </FInput>
-                                        </div>
+                                <div className="grid gap-6">
+                                    <div className="col-span-12">
+                                        <FInput label="Username" required isError={true}> 
+                                            <input type="text" name="username" value={fieldValues?.username} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                                        </FInput>
+                                    </div>
 
-                                        <div className="col-span-12">
-                                            
-                                            <FInput label="Password" required>
-                                                <input type="password" name="password" value={fieldValues?.password} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                                            </FInput>
+                                    <div className="col-span-12">
+                                        
+                                        <FInput label="Password" required>
+                                            <input type="password" name="password" value={fieldValues?.password} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+                                        </FInput>
 
-                                        </div>
                                     </div>
                                 </div>
-
+                                
                                 <button onClick={login} className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <span className="absolute left-0 inset-y-0 flex items-center pl-3"> 
                                         <svg className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="True">
@@ -66,6 +64,8 @@ const Login = () => {
                                     Sign in
                                 </button>
                                 
+                                <p className="mt-2 text-center text-sm text-gray-600"> Don't have an account? <Link to="/sign-up" className="text-indigo-600 font-semibold">Sign up</Link> </p>
+
                             </form>
                         </div>
                     </div>
