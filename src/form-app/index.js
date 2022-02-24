@@ -5,6 +5,7 @@ import Login from './login';
 const SignUp = lazy(() => import('./signup')); 
 
 const Index = () => {
+
     return (
         <React.Fragment>
             

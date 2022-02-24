@@ -2,13 +2,23 @@
 * Login 
 */
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { useForceUpdate } from '../../common/hooks/useForceUpdate';
+
+// Packages
+import Validator from 'simple-react-validator';
 
 // Components
 import FInput from '../../components/input/FInput';
 
 const Login = () => {
+
+    const dispatch = useDispatch();
+    const forceUpdate = useForceUpdate(); 
+    const validator = useRef(new Validator({ element: message => <>{message}</>, autoForceUpdate: {forceUpdate} })); 
 
     const [fieldValues, setFieldValues] = useState({
         username: '',
@@ -17,7 +27,12 @@ const Login = () => {
 
     const login = (e) => {
         e.preventDefault();
-        console.log('fieldValues', fieldValues);
+        if(validator?.current?.allValid()) {
+            validator?.current?.hideMessages();
+            dispatch({type: 'LOGIN', payload: { username: fieldValues?.username, password: fieldValues?.password }});
+        } else {
+            validator?.current?.showMessages();
+        }
     }
 
     const inputChange = e => {
@@ -41,14 +56,14 @@ const Login = () => {
                             <form className="space-y-4">
                                 <div className="grid gap-6">
                                     <div className="col-span-12">
-                                        <FInput label="Username" required isError={true}> 
+                                        <FInput label="Username" required isError={validator?.current?.message('username', fieldValues?.username, 'required')}> 
                                             <input type="text" name="username" value={fieldValues?.username} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                                         </FInput>
                                     </div>
 
                                     <div className="col-span-12">
                                         
-                                        <FInput label="Password" required>
+                                        <FInput label="Password" required isError={validator?.current?.message('password', fieldValues?.password, 'required|min:3')}> 
                                             <input type="password" name="password" value={fieldValues?.password} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                                         </FInput>
 
