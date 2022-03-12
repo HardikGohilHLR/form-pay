@@ -23,10 +23,7 @@ const SignUp = () => {
 
     const _STEP = useSelector(e => e.form.signupStep)
     
-    const [fieldValues, setFieldValues] = useState({
-        username: '',
-        password: ''
-    });
+    const [fieldValues, setFieldValues] = useState({});
 
     const [tabs, setTabs] = useState([
         { id: 1, name: 'Personal Information', isActive: true, isCompleted: false },
@@ -85,7 +82,7 @@ const SignUp = () => {
                             <div className="mt-5 md:mt-0 md:col-span-2">
                                 <form>
                                     {
-                                        _STEP?.currentStep === 1 && <PersonalInfo />
+                                        _STEP?.currentStep === 1 && <PersonalInfo validator={validator} updateData={(data) => setFieldValues(data)} />
                                     }
                                     
                                     {
@@ -97,7 +94,7 @@ const SignUp = () => {
                                             <div className="grid grid-cols-6 gap-6">
 
                                                 <div className="col-span-4 sm:col-span-2">
-                                                    <FInput label="Name" required isError={false}> 
+                                                    <FInput label="Name" required isError={true}> 
                                                         <input type="text" name="company-name" value={fieldValues?.companyName} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                                                     </FInput> 
                                                 </div>

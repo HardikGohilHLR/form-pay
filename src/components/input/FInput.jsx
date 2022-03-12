@@ -9,7 +9,12 @@ const FInput = ({label, required, isError, children}) => {
         <React.Fragment>
             <div className={`f_input ${isError ? 'f_input-error' : ''}`}>
                 
-                <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    {label}
+                    { 
+                        required && <span className='text-red-600'>*</span>
+                    }
+                </label>
 
                 <div className="f_input-area">
                     { children }
