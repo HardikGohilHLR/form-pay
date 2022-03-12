@@ -12,36 +12,34 @@ import { useForceUpdate } from '../../common/hooks/useForceUpdate';
 import Validator from 'simple-react-validator';
 
 // Components
-import FInput from '../../components/input/FInput';
 import PersonalInfo from './personal-info';
+import WorkInfo from './work-info';
 
 const SignUp = () => {
-
+    
     const dispatch = useDispatch();
+
     const forceUpdate = useForceUpdate(); 
     const validator = useRef(new Validator({ element: message => <>{message}</>, autoForceUpdate: {forceUpdate} })); 
 
     const _STEP = useSelector(e => e.form.signupStep)
-    
+    console.log('_STEP', _STEP);
     const [fieldValues, setFieldValues] = useState({});
 
-    const [tabs, setTabs] = useState([
+    const [tabs] = useState([
         { id: 1, name: 'Personal Information', isActive: true, isCompleted: false },
         { id: 2, name: 'Work Experience', isActive: false, isCompleted: false },
     ])
 
     const submit = (e) => {
         e.preventDefault();
-        if(validator?.current?.allValid()) {
-            console.log('fieldValues', fieldValues);
-        } else {
-            validator?.current?.showMessages();
+        if(_STEP?.currentStep === 1) {
+            if(validator?.current?.allValid()) {
+                dispatch({ type: 'SET_STEP', payload: 2});
+            } else {
+                validator?.current?.showMessages();
+            }
         }
-    }
-
-    const inputChange = e => {
-        let { name, value } = e.target;
-        setFieldValues({...fieldValues, [name]: value});
     }
 
     const changeTab = (tab) => {
@@ -86,68 +84,7 @@ const SignUp = () => {
                                     }
                                     
                                     {
-                                        _STEP?.currentStep === 2 && <>
-                                            <div className="col-span-12 sm:col-span-12">
-                                                <h3>Organization Details</h3>
-                                            </div>
-
-                                            <div className="grid grid-cols-6 gap-6">
-
-                                                <div className="col-span-4 sm:col-span-2">
-                                                    <FInput label="Name" required isError={true}> 
-                                                        <input type="text" name="company-name" value={fieldValues?.companyName} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                                                    </FInput> 
-                                                </div>
-
-                                                <div className="col-span-4 sm:col-span-2">
-                                                    <FInput label="Job Title" required isError={false}> 
-                                                        <input type="text" name="job-title" value={fieldValues?.jobTitle} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                                                    </FInput> 
-                                                </div>
-
-                                                <div className="col-span-4 sm:col-span-2">
-                                                    <FInput label="Location" required isError={false}>  
-                                                        <input type="text" name="location" value={fieldValues?.location} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                                                    </FInput> 
-                                                </div>
-
-                                                <div className="col-span-4 sm:col-span-2">
-                                                    <FInput label="Start Date" required isError={false}> 
-                                                        <input type="date" name="start-date" value={fieldValues?.startDate} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                                                    </FInput> 
-                                                </div>
-
-                                                <div className="col-span-4 sm:col-span-2">
-                                                    <FInput label="End Date" required isError={false}> 
-                                                        <input type="date" name="end-date" value={fieldValues?.endDate} onChange={inputChange} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                                                    </FInput> 
-                                                </div>
-
-                                                <div className="col-span-4 sm:col-span-2">
-                                                    <FInput label="Job Type" required isError={false}>
-                                                        <select name="country" value={fieldValues?.jobType} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                                            <option>Full Time</option>
-                                                            <option>Part Time</option>
-                                                            <option>Freelance</option>
-                                                            <option>Intern</option>
-                                                            <option>Co-founder</option>
-                                                        </select>
-                                                    </FInput>
-                                                </div>
-
-                                                <div className="col-span-12 sm:col-span-12">
-                                                    <FInput label="Search Skills..." required isError={false}>   
-                                                        <select name="skills" value={fieldValues?.country} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                                            <option selected>Skills</option>
-                                                            <option>HTML</option>
-                                                            <option>CSS</option>
-                                                            <option>Javascript</option>
-                                                        </select>
-                                                    </FInput> 
-                                                </div>
-
-                                            </div>
-                                        </>
+                                        _STEP?.currentStep === 2 && <WorkInfo />
                                     }
 
                                     <div className="py-3 text-right"> 

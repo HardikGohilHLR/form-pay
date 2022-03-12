@@ -7,7 +7,8 @@ const initialState = {
     },
     signupStep: {
         currentStep: 1,
-        
+    },
+    signup: {
         firstName: '',
         lastName: '',
         phoneNumber: '',
@@ -17,6 +18,7 @@ const initialState = {
         country: '',
         address: '',
     }
+    
 }
   
 export const form = (state = initialState, action) => {
@@ -26,7 +28,14 @@ export const form = (state = initialState, action) => {
                 ...state,
                 username: action.payload.username,
                 password: action.payload.password,
-            };    
+            };
+        case 'SET_STEP':
+            console.log('asdasd', action.payload);
+            console.log('state', state);
+            return {
+                ...state,
+                signupStep.currentStep: action.payload
+            } 
         default:
             return state;
         }
