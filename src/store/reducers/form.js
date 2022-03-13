@@ -1,5 +1,4 @@
 // Reducer - Form
-
 const initialState = {
     login: {
         username: '',
@@ -8,17 +7,7 @@ const initialState = {
     signupStep: {
         currentStep: 1,
     },
-    signup: {
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-        gender: '',
-        birthDate: '',
-        country: '',
-        address: '',
-    }
-    
+    signup: { }
 }
   
 export const form = (state = initialState, action) => {
@@ -26,18 +15,23 @@ export const form = (state = initialState, action) => {
         case 'LOGIN':
             return {
                 ...state,
-                username: action.payload.username,
-                password: action.payload.password,
+                login: {
+                    username: action.payload.username,
+                    password: action.payload.password,
+                }
             };
-        case 'SET_STEP':
-            console.log('asdasd', action.payload);
-            console.log('state', state);
+        case 'SIGNUP':
             return {
                 ...state,
-                signupStep.currentStep: action.payload
+                signup: { ...action.payload }
+            };
+        case 'SET_STEP':
+            return {
+                ...state,
+                signupStep: { currentStep: action.payload }
             } 
         default:
             return state;
-        }
+    }
 }
   

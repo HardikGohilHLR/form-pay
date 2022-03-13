@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 // Reducers
-import { form } from './form'
+import { form } from './form';
 
 const reducer = combineReducers({
     form

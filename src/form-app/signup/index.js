@@ -2,9 +2,9 @@
 * Sign up 
 */
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useForceUpdate } from '../../common/hooks/useForceUpdate';
 
@@ -18,28 +18,52 @@ import WorkInfo from './work-info';
 const SignUp = () => {
     
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const forceUpdate = useForceUpdate(); 
     const validator = useRef(new Validator({ element: message => <>{message}</>, autoForceUpdate: {forceUpdate} })); 
 
-    const _STEP = useSelector(e => e.form.signupStep)
-    console.log('_STEP', _STEP);
+    const _STEP = useSelector(e => e.form.signupStep);
     const [fieldValues, setFieldValues] = useState({});
 
-    const [tabs] = useState([
+    const [tabs, setTabs] = useState([
         { id: 1, name: 'Personal Information', isActive: true, isCompleted: false },
         { id: 2, name: 'Work Experience', isActive: false, isCompleted: false },
-    ])
+    ]);
 
-    const submit = (e) => {
+    useEffect(() => {
+        let tabsData = [...tabs];
+        tabsData?.forEach(tab => {
+            tab.isActive = false;
+            if(tab.id === _STEP?.currentStep) {
+                tab.isActive = true;
+            }
+            return tab;
+        });
+        setTabs(tabsData);
+    }, [_STEP]);
+
+    const next = (e) => {
         e.preventDefault();
         if(_STEP?.currentStep === 1) {
             if(validator?.current?.allValid()) {
                 dispatch({ type: 'SET_STEP', payload: 2});
+                dispatch({ type: 'SIGNUP', payload: fieldValues});
             } else {
                 validator?.current?.showMessages();
             }
         }
+    }
+
+    const submit = (e) => {
+        e.preventDefault();
+        dispatch({ type: 'SIGNUP', payload: fieldValues});  
+        navigate('/welcome');
+    }
+
+    const back = (e) => {
+        e.preventDefault();
+        dispatch({ type: 'SET_STEP', payload: 1});
     }
 
     const changeTab = (tab) => {
@@ -80,24 +104,34 @@ const SignUp = () => {
                             <div className="mt-5 md:mt-0 md:col-span-2">
                                 <form>
                                     {
-                                        _STEP?.currentStep === 1 && <PersonalInfo validator={validator} updateData={(data) => setFieldValues(data)} />
+                                        _STEP?.currentStep === 1 && <PersonalInfo validator={validator} updateData={(data) => setFieldValues({...fieldValues, ...data})} />
                                     }
                                     
                                     {
-                                        _STEP?.currentStep === 2 && <WorkInfo />
+                                        _STEP?.currentStep === 2 && <WorkInfo updateData={(data) => setFieldValues({...fieldValues, ...data})} />
                                     }
 
-                                    <div className="py-3 text-right"> 
-                                        <button onClick={submit} className="group relative w-56 ml-auto flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                            <span className="absolute left-0 inset-y-0 flex items-center pl-3"> 
-                                                <svg className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="True">
-                                                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                                                </svg>
-                                            </span>
-                                            Next
-                                        </button>
+                                    <div className="py-3 flex justify-end"> 
+                                        {
+                                            _STEP?.currentStep > 1 &&   
+                                                <button onClick={back} className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">                                                
+                                                    Back
+                                                </button>
+                                        }
+                                        {
+                                            _STEP?.currentStep > 1 &&   
+                                            <button onClick={submit} className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 ml-3 hover:bg-indigo-700">                                                
+                                                Submit
+                                            </button>
+                                        }
+                                        {
+                                            _STEP?.currentStep === 1 &&   
+                                            <button onClick={next} className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 ml-3 hover:bg-indigo-700">                                                
+                                                Next
+                                            </button>
+                                        }
                                     </div>
-                                        
+
                                 </form>
                             </div>
                         </div>

@@ -92,9 +92,9 @@ const PersonalInfo = ({validator, updateData}) => {
                 <div className="col-span-4 sm:col-span-2">
                     <FInput label="Country">   
                         <select id="country" name="country" onChange={handle.inputChange} value={fieldValues?.country} className="focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            <option value="india">India</option>
-                            <option value="united-states">United States</option>
-                            <option value="canada">Canada</option>
+                            <option value="India">India</option>
+                            <option value="United States">United States</option>
+                            <option value="Canada">Canada</option>
                         </select>
                     </FInput> 
                 </div>
